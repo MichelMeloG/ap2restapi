@@ -19,8 +19,18 @@ public class AlunoController {
 
     @PostMapping
     public ResponseEntity<Aluno> criarAluno(@Valid @RequestBody Aluno aluno) {
+        String maxMatricula = alunoRepository.findMaxMatricula();
+        String novaMatricula = "00000001";
+        if (maxMatricula != null && !maxMatricula.isEmpty()) {
+            try {
+                long currentMax = Long.parseLong(maxMatricula);
+                novaMatricula = String.format("%08d", currentMax + 1);
+            } catch (NumberFormatException e) {
+                // Keep default if parsing fails
+            }
+        }
         
-        Aluno novoAluno = EntidadeFactory.criarAluno(aluno.getMatricula(), aluno.getNome());
+        Aluno novoAluno = EntidadeFactory.criarAluno(novaMatricula, aluno.getNome());
         
         return ResponseEntity.ok(alunoRepository.save(novoAluno));
     }

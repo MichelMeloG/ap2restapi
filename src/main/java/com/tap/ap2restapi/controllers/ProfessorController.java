@@ -19,7 +19,18 @@ public class ProfessorController {
 
     @PostMapping
     public ResponseEntity<Professor> criarProfessor(@Valid @RequestBody Professor professor) {
-        Professor novoProfessor = EntidadeFactory.criarProfessor(professor.getMatricula(), professor.getNome());
+        String maxMatricula = professorRepository.findMaxMatricula();
+        String novaMatricula = "00001";
+        if (maxMatricula != null && !maxMatricula.isEmpty()) {
+            try {
+                long currentMax = Long.parseLong(maxMatricula);
+                novaMatricula = String.format("%05d", currentMax + 1);
+            } catch (NumberFormatException e) {
+                // Keep default if parsing fails
+            }
+        }
+
+        Professor novoProfessor = EntidadeFactory.criarProfessor(novaMatricula, professor.getNome());
         return ResponseEntity.ok(professorRepository.save(novoProfessor));
     }
 
