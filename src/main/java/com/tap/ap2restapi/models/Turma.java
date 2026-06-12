@@ -32,5 +32,6 @@ public class Turma {
         joinColumns = @JoinColumn(name = "turma_id"),
         inverseJoinColumns = @JoinColumn(name = "aluno_id")
     )
+    @com.fasterxml.jackson.annotation.JsonProperty(access = com.fasterxml.jackson.annotation.JsonProperty.Access.READ_ONLY)
     private List<Aluno> alunos;
 }
