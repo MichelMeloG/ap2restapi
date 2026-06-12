@@ -20,8 +20,8 @@ Os dados ficam salvos exclusivamente na **Memória RAM** da máquina (H2 Databas
 
 ## 🛡️ Validações e Regras de Identificação
 Foi utilizada a biblioteca de Validações do Spring (`spring-boot-starter-validation`) para garantir regras rígidas na criação de dados (evitando Erros 500 no banco de dados, barrando-os logo na entrada com Erro 400 - Bad Request):
-* **Aluno**: Chave primária é a `matricula`. É obrigatória (`@NotBlank`) e tem que ter **exatamente 8 caracteres** (`@Size`).
-* **Professor**: Chave primária é a `matricula`. É obrigatória e tem que ter **exatamente 5 caracteres**.
+* **Aluno**: Chave primária é a `matricula`. A matrícula agora é **gerada automaticamente** pelo sistema, recebendo um sequencial de 8 dígitos (ex: 00000001). O `nome` é obrigatório (`@NotBlank`).
+* **Professor**: Chave primária é a `matricula`. A matrícula agora é **gerada automaticamente** pelo sistema, recebendo um sequencial de 5 dígitos (ex: 00001). O `nome` é obrigatório.
 * **Turma**: Chave primária é o `codigo`. É obrigatório, junto com o `nomeDisciplina`.
 
 ## 🚀 Como testar a API localmente (Swagger)
@@ -30,4 +30,4 @@ Todo o CRUD e a documentação dos Endpoints estão expostos visualmente na inte
 1. Dê o Play (`Ap2restapiApplication`) no seu IntelliJ.
 2. Acesse no navegador: `http://localhost:8080/swagger-ui/index.html`
 
-> **Atenção nos POSTs:** Como agora as matrículas e códigos têm um padrão fixo e não são mais números auto-gerados, lembre-se de enviar a `matricula` / `codigo` sempre que for usar o botão POST do Swagger!
+> **Atenção nos POSTs:** Para os endpoints de `Aluno` e `Professor`, o sistema gera a matrícula automaticamente. Portanto, não é necessário enviar o campo `matricula` no JSON (se enviar, ele será ignorado/substituído pelo gerado no backend). Para a `Turma`, o `codigo` ainda precisa ser enviado!
