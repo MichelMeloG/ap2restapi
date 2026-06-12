@@ -2,6 +2,8 @@
 
 Esta é uma REST API minimalista desenvolvida em **Spring Boot (Java 17)** para a avaliação AP2. 
 
+link api online: `https://ap2restapi-564386776684.us-central1.run.app/swagger-ui/index.html#/`
+
 ## 🎯 Objetivo do Projeto
 O objetivo principal é entregar 100% dos requisitos solicitados na prova com o código mais simples e direto ao ponto possível. Para isso, o projeto removeu camadas extras (como Services) e concentrou-se apenas no que é essencial.
 
