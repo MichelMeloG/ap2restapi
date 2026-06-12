@@ -1,35 +1,112 @@
-# Gestão Escolar API - Avaliação AP2 (TAP)
+# API Gestão da Copa do Mundo ⚽🌍
 
-Esta é uma REST API minimalista desenvolvida em **Spring Boot (Java 17)** para a avaliação AP2. 
+Este é o projeto **AP2** da disciplina de TAP (Tópicos Avançados de Programação). Consiste em uma **API RESTful** desenvolvida em **Java + Spring Boot**, projetada para realizar a gestão das Seleções, Jogadores e Partidas de uma Copa do Mundo.
 
-link api online: `https://ap2restapi-564386776684.us-central1.run.app/swagger-ui/index.html#/`
+O projeto foi inteiramente refatorado seguindo rigorosos padrões de **Engenharia de Software**, englobando Clean Code, Princípios SOLID e Design Patterns.
+
+---
 
 ## 🎯 Objetivo do Projeto
-O objetivo principal é entregar 100% dos requisitos solicitados na prova com o código mais simples e direto ao ponto possível. Para isso, o projeto removeu camadas extras (como Services) e concentrou-se apenas no que é essencial.
+Oferecer uma arquitetura moderna e coesa para operações CRUD completas no contexto da Copa do Mundo (Minimundo escolhido), utilizando um Banco de Dados Relacional em Memória (H2), além de documentação limpa e iterativa gerada pelo **Swagger**.
 
-## 🏗️ Estrutura (Apenas 2 Pacotes)
-1. **`models`**: Onde fica o "Coração" do sistema. Estão aqui as 3 Entidades (`Aluno`, `Professor`, `Turma`), os 3 Repositories (que conversam com o banco de dados via JPA) e a Fábrica.
-2. **`controllers`**: Onde ficam as rotas web (Endpoints). Eles recebem as requisições HTTP e repassam a lógica de salvar/atualizar direto para o banco.
+## 🛠️ Stack Tecnológica
+* **Java 17 / 24** (Compilável no JDK mais recente)
+* **Spring Boot 3.3.x**
+  * Spring Web (Camada REST)
+  * Spring Data JPA (Persistência)
+  * Spring Validation (Regras de entrada)
+* **H2 Database** (Banco Relacional em Memória)
+* **Lombok** (Versão 1.18.38 - Compatível com Java 24)
+* **Swagger / OpenAPI** (Documentação Automática)
+* **Maven** (Gerenciador de Dependências)
 
-## 🧠 Padrões de Projeto (Design Patterns)
-* **Builder Pattern**: Implementado via Lombok (`@Builder`) dentro de todas as entidades. Substitui a necessidade de construtores confusos com vários parâmetros, permitindo montar objetos dinamicamente: `Aluno.builder().matricula("x").build()`.
-* **Factory Method Pattern**: Implementado na classe `EntidadeFactory`. A regra é simples: os Controllers são proibidos de dar um "new" ou de usar os builders diretamente. Eles pedem o objeto pronto para a Fábrica.
+---
 
-## 🗄️ Banco de Dados (H2 em Memória)
-Os dados ficam salvos exclusivamente na **Memória RAM** da máquina (H2 Database).
-* **Por quê?** Para facilitar a vida de quem for avaliar. O professor só precisa dar o "Play" no projeto, sem se preocupar em instalar MySQL/Postgres ou configurar senhas. Parou a aplicação, os dados somem.
-* **Console do H2:** Pode ser acessado visualmente via `http://localhost:8080/h2-console` usando a JDBC URL gerada no log do console ao dar o Play.
+## 🧩 Arquitetura & Boas Práticas
 
-## 🛡️ Validações e Regras de Identificação
-Foi utilizada a biblioteca de Validações do Spring (`spring-boot-starter-validation`) para garantir regras rígidas na criação de dados (evitando Erros 500 no banco de dados, barrando-os logo na entrada com Erro 400 - Bad Request):
-* **Aluno**: Chave primária é a `matricula`. A matrícula agora é **gerada automaticamente** pelo sistema, recebendo um sequencial de 8 dígitos (ex: 00000001). O `nome` é obrigatório (`@NotBlank`).
-* **Professor**: Chave primária é a `matricula`. A matrícula agora é **gerada automaticamente** pelo sistema, recebendo um sequencial de 5 dígitos (ex: 00001). O `nome` é obrigatório.
-* **Turma**: Chave primária é o `codigo`. É obrigatório, junto com o `nomeDisciplina`.
+### 📂 Estrutura de Pacotes (SRP e Clean Code)
+* `controller/`: Interceptores HTTP que chamam as regras de negócio.
+* `service/`: Onde toda a lógica do minimundo acontece.
+* `repository/`: Interfaces do Spring Data JPA.
+* `entity/`: Classes espelho das tabelas do banco de dados relacional.
+* `dto/`: Objetos "anêmicos" que filtram o que entra e o que sai da API.
+* `config/`: Configurações de CORS e outras diretivas Web.
+* `exception/`: Tratamento central de erros HTTP (`@RestControllerAdvice`).
 
-## 🚀 Como testar a API localmente (Swagger)
-Todo o CRUD e a documentação dos Endpoints estão expostos visualmente na interface do OpenAPI/Swagger:
+### 📐 Design Patterns Implementados
+1. **Builder (Criacional)**: Anotações `@Builder` facilitam instanciar entidades complexas.
+2. **DTO (Estrutural)**: Evita acoplamento entre camada de Banco de Dados e Front-End.
+3. **Factory Method (Criacional)**: `SelecaoFactory` automatiza e centraliza a conversão de Entidades para ResponseDTOs.
 
-1. Dê o Play (`Ap2restapiApplication`) no seu IntelliJ.
-2. Acesse no navegador: `http://localhost:8080/swagger-ui/index.html`
+### 🗄️ Modelagem JPA e Relacionamentos
+* **1:N (Um para Muitos)**: Uma Seleção tem Vários Jogadores.
+* **N:N (Muitos para Muitos)**: Várias Seleções participam de Várias Partidas.
 
-> **Atenção nos POSTs:** Para os endpoints de `Aluno` e `Professor`, o sistema gera a matrícula automaticamente. Portanto, não é necessário enviar o campo `matricula` no JSON (se enviar, ele será ignorado/substituído pelo gerado no backend). Para a `Turma`, o `codigo` ainda precisa ser enviado!
+---
+
+## 🚀 Como Executar o Projeto
+
+1. Clone o repositório ou faça o download da pasta do projeto.
+2. Abra seu terminal na raiz da pasta `ap2restapi`.
+3. Certifique-se de ter o **Java instalado**.
+4. Rode a aplicação com o Maven Wrapper:
+
+```bash
+# Windows
+.\mvnw spring-boot:run
+
+# Linux / Mac
+./mvnw spring-boot:run
+```
+
+A aplicação subirá na porta padrão **8080**.
+
+---
+
+## 🌐 Como Acessar a Aplicação
+
+### 📖 Documentação do Swagger (Testar Endpoints)
+Para testar todos os endpoints `GET`, `POST`, `PUT` e `DELETE` sem precisar do Postman:
+👉 **[http://localhost:8080/swagger-ui/index.html](http://localhost:8080/swagger-ui/index.html)**
+
+> **Dica:** O projeto possui um roteamento na rota raiz (`/`), ou seja, se você abrir só `http://localhost:8080/` no navegador, será redirecionado para o Swagger automaticamente.
+
+### 💾 Console do Banco H2
+Para ver as tabelas reais, relacionamentos e fazer queries SQL:
+👉 **[http://localhost:8080/h2-console](http://localhost:8080/h2-console)**
+
+**Credenciais para Login:**
+* **JDBC URL:** `jdbc:h2:mem:copadb` *(Exatamente como está aqui)*
+* **User Name:** `sa`
+* **Password:** *(deixe em branco)*
+* Clique no botão **Connect**.
+
+---
+
+## 📌 Rotas Disponíveis (Endpoints)
+
+| Entidade | Método | Rota | Descrição |
+| :--- | :--- | :--- | :--- |
+| **Seleções** | POST | `/api/selecoes` | Cadastra país participante |
+| | GET | `/api/selecoes` | Retorna todos os países |
+| | GET | `/api/selecoes/{id}` | Busca país específico |
+| | PUT | `/api/selecoes/{id}` | Atualiza ranking e técnico |
+| | DELETE | `/api/selecoes/{id}` | Deleta país |
+| | GET | `/api/selecoes/{id}/jogadores` | Traz apenas o elenco do país |
+| **Jogadores** | POST | `/api/jogadores` | Cadastra jogador (requer `selecaoId`) |
+| | GET | `/api/jogadores` | Traz todos os jogadores |
+| | GET | `/api/jogadores/{id}` | Busca por ID |
+| | PUT | `/api/jogadores/{id}` | Atualiza dados |
+| | DELETE | `/api/jogadores/{id}` | Remove do sistema |
+| **Partidas** | POST | `/api/partidas` | Cadastra jogo (sem vínculo inicial) |
+| | POST | `/api/partidas/{id}/selecoes/{idSelecao}` | Vincula Seleções N:N à partida |
+| | GET | `/api/partidas` | Traz o calendário de jogos completo |
+| | GET | `/api/partidas/{id}` | Retorna um jogo |
+| | PUT | `/api/partidas/{id}` | Atualiza data, estádio, placar |
+| | DELETE | `/api/partidas/{id}` | Remove do sistema |
+| | DELETE | `/api/partidas/{id}/selecoes/{idSelecao}` | Desfaz o vínculo da partida |
+
+---
+
+## ✅ Tratamento de Exceções 
+O sistema trata graciosamente erros lançando objetos HTTP corretos. Se buscar por um `ID` que não existe no Banco, a API retornará código **404 NOT FOUND** formatado (graças ao `GlobalExceptionHandler`). Se faltarem dados obrigatórios nos POSTs, retornará um **400 BAD REQUEST**.
