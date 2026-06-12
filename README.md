@@ -65,13 +65,21 @@ A aplicação subirá na porta padrão **8080**.
 
 ## 🌐 Como Acessar a Aplicação
 
-### 📖 Documentação do Swagger (Testar Endpoints)
+A aplicação está hospedada no Google Cloud Run e também pode ser executada localmente.
+
+### ☁️ Acesso em Nuvem (Google Cloud Run)
+* **Swagger UI:** 👉 **[https://ap2restapi-564386776684.us-central1.run.app/swagger-ui/index.html](https://ap2restapi-564386776684.us-central1.run.app/swagger-ui/index.html)**
+* **Console H2:** 👉 **[https://ap2restapi-564386776684.us-central1.run.app/h2-console](https://ap2restapi-564386776684.us-central1.run.app/h2-console)**
+
+### 💻 Acesso Local
+
+#### 📖 Documentação do Swagger (Testar Endpoints)
 Para testar todos os endpoints `GET`, `POST`, `PUT` e `DELETE` sem precisar do Postman:
 👉 **[http://localhost:8080/swagger-ui/index.html](http://localhost:8080/swagger-ui/index.html)**
 
 > **Dica:** O projeto possui um roteamento na rota raiz (`/`), ou seja, se você abrir só `http://localhost:8080/` no navegador, será redirecionado para o Swagger automaticamente.
 
-### 💾 Console do Banco H2
+#### 💾 Console do Banco H2
 Para ver as tabelas reais, relacionamentos e fazer queries SQL:
 👉 **[http://localhost:8080/h2-console](http://localhost:8080/h2-console)**
 
